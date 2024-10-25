@@ -7,6 +7,8 @@ const divAutos = document.querySelector("#divAutos");
 const botonFiltrar = document.querySelector("#botonFiltrar");
 const divError = document.querySelector("#divError");
 
+import { url, urlModelos, urlAutos, urlFiltro } from "../api.js";
+
 for (let index = 2024; index >= 1900; index--) {
   const option = document.createElement("option");
 
@@ -14,8 +16,6 @@ for (let index = 2024; index >= 1900; index--) {
   option.setAttribute("value", index);
   selectAnio.append(option);
 }
-
-import { url } from "../api.js";
 
 fetch(url)
   .then(function (respuestaServidor) {
@@ -32,11 +32,7 @@ fetch(url)
   });
 
 marca.addEventListener("change", function () {
-  const urlModelos =
-    "https://ha-front-api-proyecto-final.vercel.app/models?brand=" +
-    marca.value;
-
-  fetch(urlModelos)
+  fetch(urlModelos + marca.value)
     .then(function (respuestaServidor) {
       return respuestaServidor.json();
     })
@@ -58,11 +54,8 @@ marca.addEventListener("change", function () {
         option.textContent = "Seleccionar...";
         modelo.append(option);
       }
-      console.log(listaModelos);
     });
 });
-
-const urlAutos = "https://ha-front-api-proyecto-final.vercel.app/cars";
 
 fetch(urlAutos)
   .then(function (respuestaServidor) {
@@ -132,17 +125,16 @@ botonFiltrar.addEventListener("click", function () {
   let valorModelo = modelo.value;
   let valorEstado = estado.value;
 
-  let urlFiltro =
-    "https://ha-front-api-proyecto-final.vercel.app/cars?year=" +
-    valorAnio +
-    "&brand=" +
-    valorMarca +
-    "&model=" +
-    valorModelo +
-    "&status=" +
-    valorEstado;
-
-  fetch(urlFiltro)
+  fetch(
+    urlFiltro +
+      valorAnio +
+      "&brand=" +
+      valorMarca +
+      "&model=" +
+      valorModelo +
+      "&status=" +
+      valorEstado
+  )
     .then(function (respuestaServidor) {
       return respuestaServidor.json();
     })
